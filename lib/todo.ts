@@ -1,15 +1,19 @@
-import { addDoc, collection, getDocs, serverTimestamp } from "firebase/firestore"
+import { addDoc, collection, deleteDoc, doc, getDocs, serverTimestamp } from "firebase/firestore"
 import { db } from "./firebase"
 import { TodoType } from "./todoType";
-import { create } from "domain";
 
 export const getTodos = async () => {
   const ref = collection(db, "todos");
-  console.log("ref: ", ref)
   const querySnapshot = await getDocs(ref);
   const todos: TodoType[] = [];
   querySnapshot.forEach((doc) => {
-    todos.push(doc.data() as TodoType)
+    const todo: TodoType = {
+      id: doc.id,
+      title: doc.data().title,
+      detail: doc.data().detail,
+      status: doc.data().status
+    }
+    todos.push(todo)
   })
   return todos;
 }
@@ -25,4 +29,10 @@ export const addTodo = async (title: string, detail: string) => {
   });
   console.log("addedTodo: ", addedTodo.id);
   return addedTodo;
+}
+
+export const deleteTodo = async (id: string) => {
+  console.log("id: ", id)
+  const ref = doc(db, "todos", id);
+  await deleteDoc (ref);
 }

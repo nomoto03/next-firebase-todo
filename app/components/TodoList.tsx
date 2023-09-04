@@ -1,5 +1,6 @@
 import { getTodos } from "@/lib/todo";
 import { TodoType } from "@/lib/todoType";
+import DeleteButton from "./DeleteButton";
 
 const TodoList = async () => {
 
@@ -13,7 +14,7 @@ const TodoList = async () => {
         <div>
         <button className="text-xs text-green-700 bg-green-200 border border-green-500 p-2 mr-3 rounded-full">{todo.status}</button>
           <button className="text-sky-500 mr-3">edit</button>
-          <button className="text-red-500">delete</button>
+          <DeleteButton id={ todo.id } />
         </div>
       </li>
       ))}
