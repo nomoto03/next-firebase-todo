@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, serverTimestamp } from "firebase/firestore"
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, serverTimestamp, updateDoc } from "firebase/firestore"
 import { db } from "./firebase"
 import { TodoType } from "./todoType";
 
@@ -18,6 +18,18 @@ export const getTodos = async () => {
   return todos;
 }
 
+export const getTodoById = async (id: string) => {
+  const ref = doc(db, "todos", id);
+  const docSnap = await getDoc(ref)
+
+  if (docSnap.exists()) {
+    const todo: TodoType = {...docSnap.data() as TodoType, id: docSnap.id};
+    return todo
+  } else {
+    console.log("todoを取得できませんでした。")
+  }
+}
+
 export const addTodo = async (title: string, detail: string) => {
   const ref = collection(db, "todos");
   const addedTodo = await addDoc(ref, {
@@ -31,8 +43,13 @@ export const addTodo = async (title: string, detail: string) => {
   return addedTodo;
 }
 
+export const updateTodo = async (todo: TodoType) => {
+  const ref = doc(db, "todos", todo.id);
+  await updateDoc(ref, todo)
+}
+
 export const deleteTodo = async (id: string) => {
-  console.log("id: ", id)
   const ref = doc(db, "todos", id);
-  await deleteDoc (ref);
+  const result = await deleteDoc (ref);
+  console.log("delete result:", result)
 }

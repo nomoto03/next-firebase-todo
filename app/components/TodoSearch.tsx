@@ -4,7 +4,7 @@ const TodoSearch = () => {
 
   return (
     <div className='flex justify-between p-3'>
-      <span>TodoSearch</span>
+      <span>TodoList</span>
       <div>
         <Link href={"/todo/create"} className='text-sky-500'>create</Link>
       </div>

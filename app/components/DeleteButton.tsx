@@ -3,11 +3,11 @@
 import { deleteTodo } from "@/lib/todo";
 import { useRouter } from "next/navigation";
 
-const DeleteButton = (props: { id: string }) => {
+const DeleteButton = ({ id }: { id: string }) => {
   const router = useRouter();
   const handleClick = async () => {
     if(confirm("削除してよろしいですか？")) {
-      await deleteTodo(props.id);
+      await deleteTodo(id);
       router.refresh();
     }
   };
